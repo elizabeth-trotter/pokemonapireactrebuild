@@ -1,3 +1,34 @@
+# Pokemon API React Rebuild
+
+### Description:
+
+Create a single page pokemon application using the Pokemonapi and React TypeScript
+
+Requirements:
+
+- using the Pokemon API https://pokeapi.co/
+- ability to search by name and Pokedex Number (only Gen 1 - 5 pokemon)
+- ability to get a random pokemon
+- image of pokemon and shiny form
+- Pokemon Name
+- show 1 location from any game. If pokemon doesn't have a location, have it return "N/A"
+- element Typing
+- all possible abilities
+- all possible moves
+- show Evolutionary Paths, if pokemon doesn't have an evolutionary path, have it return "N/A"
+- have a Favorites list
+- fully Responsive using Tailwind CSS https://tailwindcss.com
+- have a Prototype in Figma (Desktop, Tablet, Mobile)
+
+
+### Peer Review:
+Name:
+Comment(s):
+
+
+---
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
