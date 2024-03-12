@@ -3,7 +3,7 @@
 import { Button, Modal } from 'flowbite-react';
 import { useState } from 'react';
 
-function DrawerComponent() {
+function ModalComponent() {
   const [openModal, setOpenModal] = useState(false);
 
   return (
@@ -35,4 +35,4 @@ function DrawerComponent() {
   );
 }
 
-export default DrawerComponent
+export default ModalComponent

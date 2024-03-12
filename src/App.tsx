@@ -1,6 +1,6 @@
 import './App.css';
 import ButtonComponent from './Components/ButtonComponent';
-import DrawerComponent from './Components/DrawerComponent';
+import ModalComponent from './Components/ModalComponent';
 
 function App() {
   return (
@@ -80,7 +80,7 @@ function App() {
     </main>
 
       <ButtonComponent />
-      <DrawerComponent />
+      <ModalComponent />
     </>
   );
 }
