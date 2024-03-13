@@ -29,6 +29,8 @@ const HomeComponent = () => {
     const [searchItem, setSearchItem] = useState<string | number>(1);
     const [pokemon, setPokemon] = useState<IPokemon>();
 
+    const [image, setImage] = useState('');
+
     const handleSearchClick = () => {
         if (input) {
             setSearchItem(input)
@@ -49,7 +51,14 @@ const HomeComponent = () => {
             console.log(pokeData);
         }
         getData();
+
     }, [searchItem])
+
+    useEffect(() => {
+        if (pokemon && pokemon.sprites.other && pokemon.sprites.other['official-artwork']) {
+            setImage(pokemon.sprites.other['official-artwork'].front_default);
+        }
+    }, [pokemon]);
 
     function capitalizeFirstLetter(str: string) {
         return str.charAt(0).toUpperCase() + str.slice(1);
@@ -67,7 +76,7 @@ const HomeComponent = () => {
                         <div className="bg-white bg-opacity-50 flex w-[100%] h-16 sm:h-14 items-center rounded-lg">
                             <input value={input} onChange={(e) => setInput(e.target.value)}
                                 className="montserrat text-xl font-medium border-none w-full flex-1 px-4 bg-transparent" type="text"
-                                placeholder="Pokémon name/ number"/>
+                                placeholder="Pokémon name/ number" />
                             <button onClick={handleSearchClick} className="icon-btn px-1 py-1">
                                 <img className="h-7" src="./assets/faSearch.png" alt="search icon" />
                             </button>
@@ -83,7 +92,7 @@ const HomeComponent = () => {
                         </div>
 
                         <div className="flex justify-center items-center py-5">
-                            <img id="pokeImg" src={pokemon && pokemon.sprites.other && pokemon.sprites.other["official-artwork"].front_default} alt="pokemon image" />
+                            <img id="pokeImg" src={image} alt="pokemon image" />
                         </div>
 
                         <div className="flex justify-between items-end">
