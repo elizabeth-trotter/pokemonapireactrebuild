@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import IPokemon from '../../Interfaces/IPokemon';
-import GetData from '../../DataServices/DataServices';
+import { GetData } from '../../DataServices/DataServices';
+import { ILocalArray } from '../../Interfaces/ILocal';
 
 const HomeComponent = () => {
     //Background
+    type BackgroundClass = 'normal' | 'fire' | 'water' | 'electric' | 'grass' | 'ice' | 'fighting' | 'poison' | 'ground' | 'flying' | 'psychic' | 'bug' | 'rock' | 'ghost' | 'dragon' | 'dark' | 'steel' | 'fairy';
     const backgroundClasses = {
         normal: 'bg-normal',
         fire: 'bg-fire',
@@ -29,7 +31,15 @@ const HomeComponent = () => {
     const [searchItem, setSearchItem] = useState<string | number>(1);
     const [pokemon, setPokemon] = useState<IPokemon>();
 
+    const [background, setBackground] = useState<string>('');
     const [image, setImage] = useState('');
+    const [isShiny, setIsShiny] = useState(false);
+    const [shinyFormBtn, setShinyFormBtn] = useState('');
+    const [types, setTypes] = useState('');
+    const [location, setLocation] = useState('');
+    const [localData, setLocalData] = useState<ILocalArray | null>(null);
+    const [abilities, setAbilities] = useState('');
+    const [moves, setMoves] = useState('');
 
     const handleSearchClick = () => {
         if (input) {
@@ -44,6 +54,10 @@ const HomeComponent = () => {
         }
     };
 
+    const handleShinyClick = () => {
+        setIsShiny(!isShiny);
+    };
+
     useEffect(() => {
         const getData = async () => {
             const pokeData = await GetData(searchItem);
@@ -55,17 +69,80 @@ const HomeComponent = () => {
     }, [searchItem])
 
     useEffect(() => {
+        const getData = async () => {
+            if (pokemon) {
+                const localFetch = await fetch(pokemon.location_area_encounters);
+                const data = await localFetch.json();
+                setLocalData(data);
+            }
+        }
+        getData();
+
         if (pokemon && pokemon.sprites.other && pokemon.sprites.other['official-artwork']) {
             setImage(pokemon.sprites.other['official-artwork'].front_default);
+            setShinyFormBtn('./assets/Sparkle.png');
+        }
+        if (pokemon) {
+            let pokeTypesArr = pokemon.types;
+            let pokeTypes = pokeTypesArr.map(element => element.type.name);
+            setTypes(pokeTypes.map(capitalizeFirstLetter).join(", "));
+
+            const backgroundKey = pokeTypes[0] as BackgroundClass;
+            if (backgroundKey in backgroundClasses) {
+                setBackground(backgroundClasses[backgroundKey]);
+            } else {
+                // Handle the case where pokeTypes[0] is not a valid key
+                // For example, set a default background color
+                setBackground(backgroundClasses.normal);
+            }
+
+            let pokeAbilitiesArr = pokemon.abilities;
+            const pokeAbilities = pokeAbilitiesArr.map(element => capitalizeFirstLetter(element.ability.name));
+            setAbilities(pokeAbilities.join(", "));
+
+            const pokeMovesArr = pokemon.moves;
+            const pokeMoves = pokeMovesArr.map(element => capitalizeFirstLetter(element.move.name));
+            setMoves(pokeMoves.join(", "));
         }
     }, [pokemon]);
 
+    useEffect(() => {
+        if(!isShiny){
+            if (pokemon && pokemon.sprites.other && pokemon.sprites.other['official-artwork']) {
+                setImage(pokemon.sprites.other['official-artwork'].front_default);
+                setShinyFormBtn('./assets/Sparkle.png');
+            }
+        } else {
+            if (pokemon && pokemon.sprites.other && pokemon.sprites.other['official-artwork']) {
+                setImage(pokemon.sprites.other['official-artwork'].front_shiny);
+                setShinyFormBtn('./assets/SparkleFilled.png');
+            }
+        }
+    }, [isShiny]);
+
+    useEffect(() => {
+        if (!localData || Object.keys(localData).length === 0) {
+            setLocation("N/a");
+        } else if (localData[0]?.location_area) {
+            setLocation(capitalizeAndRemoveHyphens(localData[0].location_area.name));
+        } else {
+            setLocation("N/a");
+        }
+    }, [localData]);
+    
+
+    // Formatting
     function capitalizeFirstLetter(str: string) {
         return str.charAt(0).toUpperCase() + str.slice(1);
     }
+    function capitalizeAndRemoveHyphens(str: string) {
+        const words = str.split('-');
+        const capitalizedWords = words.map(word => word.charAt(0).toUpperCase() + word.slice(1));
+        return capitalizedWords.join(' ');
+    }
 
     return (
-        <body className={backgroundClasses.grass}>
+        <body className={background}>
             <main className="flex flex-wrap mx-10 sm:mx-20 md:mx-32 lg:mx-20 2xl:mx-40 py-16">
                 <header className="w-full lg:w-[45%]">
                     <nav>
@@ -92,12 +169,12 @@ const HomeComponent = () => {
                         </div>
 
                         <div className="flex justify-center items-center py-5">
-                            <img id="pokeImg" src={image} alt="pokemon image" />
+                            <img src={image} alt="pokemon image" />
                         </div>
 
                         <div className="flex justify-between items-end">
                             <button id="shinyFormBtn">
-                                <img id="shinyIcon" className="h-14" src="./assets/Sparkle.png" alt="shiny icon" />
+                                <img onClick={handleShinyClick} className="h-14" src={shinyFormBtn} alt="shiny icon" />
                             </button>
                             <h4 className="montserrat font-extrabold text-2xl sm:text-4xl">#<span>{pokemon && pokemon.id.toString().padStart(3, '0')}</span></h4>
                         </div>
@@ -125,10 +202,10 @@ const HomeComponent = () => {
                                 <h3 className="font-bold h-12 mb-4">Moves:</h3>
                             </div>
                             <div className="overflow-hidden">
-                                <div id="pokeType" className="h-12 mb-4 overflow-y-auto">{pokemon && pokemon.types.map(element => element.type.name)}</div>
-                                <p id="pokeLocation" className="h-12 mb-4 overflow-y-auto"></p>
-                                <p id="pokeAbilities" className="h-12 mb-4 overflow-y-auto"></p>
-                                <p id="pokeMoves" className="h-32 overflow-y-auto"></p>
+                                <div className="h-12 mb-4 overflow-y-auto">{types}</div>
+                                <p className="h-12 mb-4 overflow-y-auto">{location}</p>
+                                <p className="h-12 mb-4 overflow-y-auto">{abilities}</p>
+                                <p className="h-32 overflow-y-auto">{moves}</p>
                             </div>
                         </div>
 

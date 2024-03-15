@@ -1,9 +1,13 @@
 import IPokemon from "../Interfaces/IPokemon";
 
-const GetData = async (pokemon: string | number) => {
+export const GetData = async (pokemon: string | number) => {
     const promise = await fetch(`https://pokeapi.co/api/v2/pokemon/${pokemon}/`);
     const data: IPokemon = await promise.json();
     return data;
 };
 
-export default GetData
+// export const GetLocation = async (pokeData: IPokemon) => {
+//     const promise = await fetch(pokeData.location_area_encounters);
+//     const data: IPokemon = await promise.json();
+//     return data;
+// };
