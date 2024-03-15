@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import IPokemon from '../../Interfaces/IPokemon';
 import { GetData } from '../../DataServices/DataServices';
 import { ILocalArray } from '../../Interfaces/ILocal';
+import { Chain, IEvolution } from '../../Interfaces/IEvolution';
 
 const HomeComponent = () => {
     //Background
@@ -41,6 +42,10 @@ const HomeComponent = () => {
     const [abilities, setAbilities] = useState('');
     const [moves, setMoves] = useState('');
 
+    const [evoData, setEvoData] = useState<IEvolution | null>(null);
+    const [evolution, setEvolution] = useState('');
+    
+
     const handleSearchClick = () => {
         if (input) {
             setSearchItem(input)
@@ -76,6 +81,13 @@ const HomeComponent = () => {
                 const localFetch = await fetch(pokemon.location_area_encounters);
                 const data = await localFetch.json();
                 setLocalData(data);
+
+                const speciesPromise = await fetch(`${pokemon.species.url}`);
+                const speciesData = await speciesPromise.json();
+            
+                const evolutionPromise = await fetch(`${speciesData.evolution_chain.url}`);
+                const evolutionData = await evolutionPromise.json();
+                setEvoData(evolutionData);
             }
         }
         getData();
@@ -84,6 +96,7 @@ const HomeComponent = () => {
             setImage(pokemon.sprites.other['official-artwork'].front_default);
             setShinyFormBtn('./assets/Sparkle.png');
         }
+
         if (pokemon) {
             let pokeTypesArr = pokemon.types;
             let pokeTypes = pokeTypesArr.map(element => element.type.name);
@@ -106,6 +119,7 @@ const HomeComponent = () => {
             const pokeMoves = pokeMovesArr.map(element => capitalizeFirstLetter(element.move.name));
             setMoves(pokeMoves.join(", "));
         }
+        
     }, [pokemon]);
 
     useEffect(() => {
@@ -131,6 +145,32 @@ const HomeComponent = () => {
             setLocation("N/a");
         }
     }, [localData]);
+
+    useEffect(() => {
+        // if (!evoData || Object.keys(evoData).length === 0) {
+        //     setEvolution("First n/a");
+        //     console.log('dont esit');
+
+        // } else 
+        if (evoData?.chain && evoData.chain.evolves_to.length !== 0) {
+            const evolutionArr = [evoData.chain.species.name];
+            //Recursive Function
+            const traverseEvolutions = (chain: Chain) => {
+                // Base case
+                if (chain.evolves_to.length === 0) return;
+                // Recursive case
+                chain.evolves_to.forEach((evolution) => {
+                    evolutionArr.push(evolution.species.name);
+                    traverseEvolutions(evolution); // Continues until base case is reached
+                });
+            };
+            traverseEvolutions(evoData.chain);
+            console.log(evolutionArr)
+            setEvolution(evolutionArr.map(capitalizeFirstLetter).join(' - '))
+        } else {
+            setEvolution("N/a");
+        }
+    }, [evoData]);
     
 
     // Formatting
@@ -213,7 +253,7 @@ const HomeComponent = () => {
 
                         <div className="pt-10 w-full">
                             <h3 className="font-bold">Evolution:</h3>
-                            <div id="evolutionDiv" className="overflow-x-auto flex justify-between items-center text-base sm:text-lg md:text-xl lg:text-lg xl:text-2xl"></div>
+                            <div className="overflow-x-auto flex justify-between items-center text-base sm:text-lg md:text-xl lg:text-lg xl:text-2xl">{evolution}</div>
                         </div>
                     </article>
                 </aside>
