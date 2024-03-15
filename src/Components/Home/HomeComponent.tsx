@@ -147,11 +147,6 @@ const HomeComponent = () => {
     }, [localData]);
 
     useEffect(() => {
-        // if (!evoData || Object.keys(evoData).length === 0) {
-        //     setEvolution("First n/a");
-        //     console.log('dont esit');
-
-        // } else 
         if (evoData?.chain && evoData.chain.evolves_to.length !== 0) {
             const evolutionArr = [evoData.chain.species.name];
             //Recursive Function
@@ -165,7 +160,6 @@ const HomeComponent = () => {
                 });
             };
             traverseEvolutions(evoData.chain);
-            console.log(evolutionArr)
             setEvolution(evolutionArr.map(capitalizeFirstLetter).join(' - '))
         } else {
             setEvolution("N/a");
