@@ -45,6 +45,7 @@ const HomeComponent = () => {
         if (input) {
             setSearchItem(input)
         }
+        setInput('');
     };
 
     const handleRandomClick = () => {
@@ -52,6 +53,7 @@ const HomeComponent = () => {
         if (randNum) {
             setSearchItem(randNum);
         }
+        setInput('');
     };
 
     const handleShinyClick = () => {
