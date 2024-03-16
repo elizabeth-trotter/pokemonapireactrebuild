@@ -22,9 +22,9 @@ Requirements:
 
 
 ### Peer Review:
-Name:
+Name: Aiden Foo
 Comment(s):
-
+The Site looks good, I like the changing background as well. The only issues are the favorites and the random toggle button at the bottom of the page which breaks the background but that's all easily fixable by the due date. 
 
 ---
 
