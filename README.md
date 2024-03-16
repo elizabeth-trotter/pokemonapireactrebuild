@@ -1,30 +1,39 @@
 # Pokemon API React Rebuild
 
-### Description:
+Created a single page pokemon application using the Pokemonapi and React TypeScript
 
-Create a single page pokemon application using the Pokemonapi and React TypeScript
+**Name:** Elizabeth Trotter
 
-Requirements:
+**Project Scope:** This project is a single page Pokémon application that fetches data from [PokéAPI](https://pokeapi.co/). It is a rebuild of a former project, and this version features `React` and `TypeScript`.
 
-- using the Pokemon API https://pokeapi.co/
-- ability to search by name and Pokedex Number (only Gen 1 - 5 pokemon)
-- ability to get a random pokemon
-- image of pokemon and shiny form
-- Pokemon Name
-- show 1 location from any game. If pokemon doesn't have a location, have it return "N/A"
-- element Typing
-- all possible abilities
-- all possible moves
-- show Evolutionary Paths, if pokemon doesn't have an evolutionary path, have it return "N/A"
-- have a Favorites list
-- fully Responsive using Tailwind CSS https://tailwindcss.com
-- have a Prototype in Figma (Desktop, Tablet, Mobile)
+The design was prototyped in `Figma` for Desktop, Tablet, and Mobile and the site was made fully responsive with `Tailwind CSS`. 
+
+> [NOTE!]
+This project was pretty interesting! I got to build some cool custom interfaces for the data we were grabbing. It was my first time diving into React with TypeScript, so it was a bit of a learning curve, but I definitely learned a ton!
+
+***Key Features:***
+
+- Ability to get random Pokémon or search by name/ Pokédex number
+- Inventory contains Gen 1 - 5 Pokémon and images contain both default & shiny forms
+- Info provided for each Pokémon: Name, Element Typing, Location, All Abilities, All Moves, & Evolutionary Paths
+- Ability to add to a Favorites list
+- Fully Responsive with Tailwind CSS
+
+
+---
 
 
 ### Peer Review:
-Name: Aiden Foo
-Comment(s):
-The Site looks good, I like the changing background as well. The only issues are the favorites and the random toggle button at the bottom of the page which breaks the background but that's all easily fixable by the due date. 
+
+**Name:** Aiden Foo
+
+**Comment(s):**
+The site looks good, I like the changing background as well. The only issues are the favorites and the random toggle button at the bottom of the page which breaks the background but that's all easily fixable by the due date. 
+
+**Issue(s) Resolved:**
+- [x] Removed random toggle button 3/15 5:25pm
+- [x] Fixed favorites functionality 3/16 3:15pm
+
 
 ---
 

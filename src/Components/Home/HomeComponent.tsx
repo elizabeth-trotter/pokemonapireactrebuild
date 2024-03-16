@@ -4,7 +4,6 @@ import { GetData } from '../../DataServices/DataServices';
 import { ILocalArray } from '../../Interfaces/ILocal';
 import { Chain, IEvolution } from '../../Interfaces/IEvolution';
 import { getLocalStorage, removeFromLocalStorage, saveToLocalStorage } from '../../Utils/localstorage';
-import { Modal } from 'flowbite-react';
 import ModalComponent from '../Modal/ModalComponent';
 
 const HomeComponent = () => {
@@ -248,11 +247,6 @@ const HomeComponent = () => {
 
                 <aside className="w-full lg:w-[55%] lg:ps-5 xl:ps-16 pt-16 lg:pt-0">
                     <div className="flex justify-center lg:justify-end pt-6">
-                        {/* <button id="seeFavoritesBtn" type="button"
-                            className="bg-gray-800 h-16 w-72 rounded-lg flex justify-center items-center">
-                            <p className="text-white montserrat font-semibold text-2xl pe-3">Open Favorites</p>
-                            <img className="h-8" src="./assets/faHeart.png" alt="heart icon" />
-                        </button> */}
                         <ModalComponent />
                     </div>
 
@@ -275,7 +269,7 @@ const HomeComponent = () => {
 
                         <div className="pt-10 w-full">
                             <h3 className="font-bold">Evolution:</h3>
-                            <div className="overflow-x-auto flex justify-between items-center text-base sm:text-lg md:text-xl lg:text-lg xl:text-2xl">{evolution}</div>
+                            <div className="overflow-x-auto pt-10 flex justify-between items-center text-base sm:text-xl md:text-xl lg:text-xl xl:text-4xl">{evolution}</div>
                         </div>
                     </article>
                 </aside>
