@@ -8,9 +8,12 @@ function ModalComponent() {
 
   return (
     <>
-      <Button onClick={() => setOpenModal(true)}>Toggle modal</Button>
+      <Button onClick={() => setOpenModal(true)} className="bg-gray-800 h-16 w-72 rounded-lg flex justify-center items-center">
+        <p className="text-white montserrat font-semibold text-2xl pe-3">See Favorites</p>
+        <img className="h-8" src="./assets/faHeart.png" alt="heart icon" />
+      </Button>
       <Modal dismissible show={openModal} onClose={() => setOpenModal(false)}>
-        <Modal.Header>Terms of Service</Modal.Header>
+        <Modal.Header>Favorite Pokémon</Modal.Header>
         <Modal.Body>
           <div className="space-y-6">
             <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
