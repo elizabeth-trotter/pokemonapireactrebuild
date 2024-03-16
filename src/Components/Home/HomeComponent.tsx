@@ -3,6 +3,7 @@ import IPokemon from '../../Interfaces/IPokemon';
 import { GetData } from '../../DataServices/DataServices';
 import { ILocalArray } from '../../Interfaces/ILocal';
 import { Chain, IEvolution } from '../../Interfaces/IEvolution';
+import { getLocalStorage, removeFromLocalStorage, saveToLocalStorage } from '../../Utils/localstorage';
 
 const HomeComponent = () => {
     //Background
@@ -44,6 +45,9 @@ const HomeComponent = () => {
 
     const [evoData, setEvoData] = useState<IEvolution | null>(null);
     const [evolution, setEvolution] = useState('');
+
+    const [isFavorite, setIsFavorite] = useState(false);
+    const [favoriteHeartBtn, setFavoriteHeartBtn] = useState('');
     
 
     const handleSearchClick = () => {
@@ -65,6 +69,20 @@ const HomeComponent = () => {
         setIsShiny(!isShiny);
     };
 
+    const handleFavoriteClick = () => {
+        const favorites = getLocalStorage();
+
+        if(pokemon){
+            if (favorites.includes(pokemon.name)) {
+                removeFromLocalStorage(pokemon.name);
+                setFavoriteHeartBtn("./assets/HeartEmpty.png");
+            } else {
+                saveToLocalStorage(pokemon.name);
+                setFavoriteHeartBtn("./assets/HeartFilled.png");
+            }
+        }
+    };
+
     useEffect(() => {
         const getData = async () => {
             const pokeData = await GetData(searchItem);
@@ -72,7 +90,6 @@ const HomeComponent = () => {
             console.log(pokeData);
         }
         getData();
-
     }, [searchItem])
 
     useEffect(() => {
@@ -92,9 +109,11 @@ const HomeComponent = () => {
         }
         getData();
 
+        setShinyFormBtn('./assets/Sparkle.png');
+        setIsShiny(false);
+
         if (pokemon && pokemon.sprites.other && pokemon.sprites.other['official-artwork']) {
             setImage(pokemon.sprites.other['official-artwork'].front_default);
-            setShinyFormBtn('./assets/Sparkle.png');
         }
 
         if (pokemon) {
@@ -118,6 +137,13 @@ const HomeComponent = () => {
             const pokeMovesArr = pokemon.moves;
             const pokeMoves = pokeMovesArr.map(element => capitalizeFirstLetter(element.move.name));
             setMoves(pokeMoves.join(", "));
+
+            const favorites = getLocalStorage();
+            if (!favorites.includes(pokemon.name)) {
+                setFavoriteHeartBtn("./assets/HeartEmpty.png");
+            } else {
+                setFavoriteHeartBtn("./assets/HeartFilled.png");
+            }
         }
         
     }, [pokemon]);
@@ -199,8 +225,8 @@ const HomeComponent = () => {
                         </div>
                         <div className="flex items-end pt-10 sm:pt-16">
                             <h2 className="pe-5 montserrat font-extrabold text-3xl sm:text-5xl">{pokemon && capitalizeFirstLetter(pokemon.name)}</h2>
-                            <button id="favHeartBtn">
-                                <img id="heartIcon" className="h-12 ps-5" src="./assets/HeartEmpty.png" alt="heart icon" />
+                            <button onClick={handleFavoriteClick}>
+                                <img id="heartIcon" className="h-12 ps-5" src={favoriteHeartBtn} alt="heart icon" />
                             </button>
                         </div>
 
@@ -209,8 +235,8 @@ const HomeComponent = () => {
                         </div>
 
                         <div className="flex justify-between items-end">
-                            <button id="shinyFormBtn">
-                                <img onClick={handleShinyClick} className="h-14" src={shinyFormBtn} alt="shiny icon" />
+                            <button onClick={handleShinyClick}>
+                                <img className="h-14" src={shinyFormBtn} alt="shiny icon" />
                             </button>
                             <h4 className="montserrat font-extrabold text-2xl sm:text-4xl">#<span>{pokemon && pokemon.id.toString().padStart(3, '0')}</span></h4>
                         </div>
