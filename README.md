@@ -8,8 +8,8 @@ Created a single page pokemon application using the Pokemonapi and React TypeScr
 
 The design was prototyped in `Figma` for Desktop, Tablet, and Mobile and the site was made fully responsive with `Tailwind CSS`. 
 
-> [NOTE!]
-This project was pretty interesting! I got to build some cool custom interfaces for the data we were grabbing. It was my first time diving into React with TypeScript, so it was a bit of a learning curve, but I definitely learned a ton!
+> [!NOTE]
+> This project was pretty interesting! I got to build some cool custom interfaces for the data we were grabbing. It was my first time diving into React with TypeScript, so it was a bit of a learning curve, but I definitely learned a ton!
 
 ***Key Features:***
 
